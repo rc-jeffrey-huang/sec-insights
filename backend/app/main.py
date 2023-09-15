@@ -133,5 +133,4 @@ def start():
         port=8000,
         reload=live_reload,
         workers=settings.UVICORN_WORKER_COUNT,
-        proxy_headers=True,
     )
