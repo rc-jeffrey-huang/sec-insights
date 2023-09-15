@@ -3,7 +3,6 @@ databases:
   - name: llama-app-db
     databaseName: llama_app_db
     plan: free
-    previewPlan: free
 
 services:
   # A Docker web service
