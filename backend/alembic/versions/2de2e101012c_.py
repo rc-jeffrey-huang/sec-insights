@@ -24,7 +24,7 @@ def upgrade() -> None:
         type_="foreignkey",
     )
     op.drop_index("ix_document_id", table_name="document")
-    op.drop_table("document", cascade="all")
+    op.drop_table("document")
     op.drop_table("data_pg_vector_store")
     op.drop_index(
         "ix_conversationdocument_document_id", table_name="conversationdocument"
