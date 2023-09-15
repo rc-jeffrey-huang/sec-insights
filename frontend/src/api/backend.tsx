@@ -90,7 +90,7 @@ class BackendClient {
     const defaultOptions = {
       xhr: new XMLHttpRequest(),
       method: 'POST',
-      url: `${backendUrl}api/upload`,
+      url: `${backendUrl}api/upload/`,
       data: {},
     }
     const inner_options = {
