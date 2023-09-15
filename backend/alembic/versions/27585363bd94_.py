@@ -28,6 +28,11 @@ def upgrade() -> None:
     op.drop_index(
         "ix_conversationdocument_document_id", table_name="conversationdocument"
     )
+    op.drop_column("conversationdocument", "document_id")
+    op.add_column(
+        "conversationdocument", sa.Column("document_id", sa.String(), nullable=True)
+    )
+
     # ### end Alembic commands ###
 
 
