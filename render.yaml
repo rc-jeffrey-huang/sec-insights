@@ -1,8 +1,8 @@
-previewsEnabled: true
 databases:
   - name: llama-app-db
     databaseName: llama_app_db
-    plan: free
+    user: user
+    region: singapore
 
 services:
   # A Docker web service
@@ -12,7 +12,7 @@ services:
     name: llama-app-backend
     runtime: docker
     repo: https://github.com/rc-jeffrey-huang/sec-insights.git
-    region: oregon
+    region: singapore
     plan: free
     rootDir: ./backend
     # https://render.com/docs/blueprint-spec#scaling
@@ -29,7 +29,6 @@ services:
           property: connectionString
       - fromGroup: general-settings
       - fromGroup: prod-web-secrets
-      - fromGroup: preview-web-secrets
 
 envVarGroups:
   - name: general-settings
@@ -53,8 +52,6 @@ envVarGroups:
       - key: CDN_BASE_URL
         value: https://d687lz8k56fia.cloudfront.net
         previewValue: https://dl94gqvzlh4k8.cloudfront.net
-      - key: SENTRY_DSN
-        value: https://eba501c8450c42b0bbd2eb9467224e22@o4505586322833408.ingest.sentry.io/4505592019222528
   - name: prod-web-secrets
     envVars:
       # Manually add a prod value for OPENAI_API_KEY in Render dashboard
@@ -65,16 +62,4 @@ envVarGroups:
       - key: AWS_SECRET
         sync: false
       - key: POLYGON_IO_API_KEY
-        sync: false
-  - name: preview-web-secrets
-    envVars:
-      # All env vars in this group should be prefixed with "PREVIEW_"
-      # Manually add a preview value for PREVIEW_OPENAI_API_KEY in Render dashboard
-      - key: PREVIEW_OPENAI_API_KEY
-        sync: false
-      - key: PREVIEW_AWS_KEY
-        sync: false
-      - key: PREVIEW_AWS_SECRET
-        sync: false
-      - key: PREVIEW_POLYGON_IO_API_KEY
         sync: false
