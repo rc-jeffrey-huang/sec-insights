@@ -115,16 +115,16 @@ app.mount(f"/{settings.LOADER_IO_VERIFICATION_STR}", loader_io_router)
 def start():
     print("Running in AppEnvironment: " + settings.ENVIRONMENT.value)
     __setup_logging(settings.LOG_LEVEL)
-    __setup_sentry()
+    # __setup_sentry()
     """Launched with `poetry run start` at root level"""
-    if settings.RENDER:
-        # on render.com deployments, run migrations
-        logger.debug("Running migrations")
-        alembic_args = ["--raiseerr", "upgrade", "head"]
-        alembic.config.main(argv=alembic_args)
-        logger.debug("Migrations complete")
-    else:
-        logger.debug("Skipping migrations")
+    # if settings.RENDER:
+    #     # on render.com deployments, run migrations
+    #     logger.debug("Running migrations")
+    #     alembic_args = ["--raiseerr", "upgrade", "head"]
+    #     alembic.config.main(argv=alembic_args)
+    #     logger.debug("Migrations complete")
+    # else:
+    #     logger.debug("Skipping migrations")
     live_reload = not settings.RENDER
     uvicorn.run(
         "app.main:app",

@@ -1,8 +1,10 @@
 import os
 from enum import Enum
-from typing import List, Union, Optional
-from pydantic import BaseSettings, AnyHttpUrl, validator
-from multiprocessing import cpu_count
+
+# from multiprocessing import cpu_count
+from typing import List, Optional, Union
+
+from pydantic import AnyHttpUrl, BaseSettings, validator
 
 
 class AppConfig(BaseSettings.Config):
@@ -149,13 +151,14 @@ class Settings(PreviewPrefixedSettings):
 
     @property
     def UVICORN_WORKER_COUNT(self) -> int:
-        if self.ENVIRONMENT == AppEnvironment.LOCAL:
-            return 1
-        # The recommended number of workers is (2 x $num_cores) + 1:
-        # Source: https://docs.gunicorn.org/en/stable/design.html#how-many-workers
-        # But the Render.com servers don't have enough memory to support that many workers,
-        # so we instead go by the number of server instances that can be run given the memory
-        return 3
+        return 1
+        # if self.ENVIRONMENT == AppEnvironment.LOCAL:
+        #     return 1
+        # # The recommended number of workers is (2 x $num_cores) + 1:
+        # # Source: https://docs.gunicorn.org/en/stable/design.html#how-many-workers
+        # # But the Render.com servers don't have enough memory to support that many workers,
+        # # so we instead go by the number of server instances that can be run given the memory
+        # return 3
 
     @property
     def SENTRY_SAMPLE_RATE(self) -> float:
