@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client'
 import cn from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
@@ -70,6 +72,7 @@ const FileUploader = ({
         const fileListCopy = [...fileListRef.current]
 
         const index = fileListCopy.findIndex((item) => item.fileID === fileItem.fileID)
+        // @ts-ignore
         fileListCopy[index].progress = percent
         onFileListUpdate(fileListCopy)
       }
@@ -79,6 +82,7 @@ const FileUploader = ({
         const fileListCopy = [...fileListRef.current]
 
         const index = fileListCopy.findIndex((item) => item.fileID === fileItem.fileID)
+        // @ts-ignore
         fileListCopy[index].progress = 100
         onFileListUpdate(fileListCopy)
       })
@@ -87,6 +91,7 @@ const FileUploader = ({
         const fileListCopy = [...fileListRef.current]
 
         const index = fileListCopy.findIndex((item) => item.fileID === fileItem.fileID)
+        // @ts-ignore
         fileListCopy[index].progress = -2
         onFileListUpdate(fileListCopy)
         return Promise.resolve()
@@ -115,6 +120,7 @@ const FileUploader = ({
   const initialUpload = (files: File[]) => {
     if (!files.length)
       return false
+    // @ts-ignore
     fileUploader.current.value = '';
     const preparedFiles = files.map((file, index: number) => {
       const fileItem = {

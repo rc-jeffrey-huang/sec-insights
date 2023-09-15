@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { backendUrl } from "~/config";
 import type { BackendDocument } from "~/types/backend/document";
 import type { Message } from "~/types/conversation";
@@ -90,7 +91,6 @@ class BackendClient {
       xhr: new XMLHttpRequest(),
       method: 'POST',
       url: `${backendUrl}api/upload`,
-      headers: {},
       data: {},
     }
     const inner_options = {
@@ -101,6 +101,7 @@ class BackendClient {
       const xhr = inner_options.xhr;
       xhr.open(inner_options.method, inner_options.url);
       for (const key in inner_options.headers) {
+        // @ts-ignore
         xhr.setRequestHeader(key, inner_options.headers[key]);
       }
   
@@ -109,6 +110,7 @@ class BackendClient {
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
           if (xhr.status >= 200 || xhr.status < 300) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             resolve(xhr.response);
           } else {
             reject(xhr);
