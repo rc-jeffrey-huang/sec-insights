@@ -1,7 +1,7 @@
 run:
 	echo "Running in local mode."
-	docker compose start db
-	docker compose start localstack
+	docker-compose start db
+	docker-compose start localstack
 	poetry run start
 
 run_docker:
@@ -15,12 +15,17 @@ run_docker:
 		echo "The .env file contains a DATABASE_URL parameter. Please remove it from the .env file and try again."; \
 		exit 1; \
 	fi
-	docker compose up
+	docker-compose up
 
 migrate:
 	echo "Running migrations."
-	docker compose start db
+	docker-compose start db
 	poetry run python -m alembic upgrade head
+
+db_upgrade:
+	echo "Running db_upgrade."
+	docker-compose start db
+	poetry run python -m alembic revision --autogenerate
 
 test:
 	poetry run python -m pytest tests/
@@ -63,6 +68,6 @@ seed_db_preview:
 seed_db_local:
 	echo "Seeding database for local."
 	echo "<html>Hello world</html>" > /tmp/index.html
-	docker compose start db
+	docker-compose start db
 	make setup_localstack
 	python scripts/seed_db.py --ciks '["0001018724", "1326801"]'  --filing_types '["10-K"]'

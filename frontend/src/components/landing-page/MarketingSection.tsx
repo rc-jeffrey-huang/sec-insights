@@ -18,7 +18,7 @@ export const MarketingSection = () => {
 
   return (
     <>
-      <div className="mb-24 mt-24 flex h-max min-h-[200px] w-full items-center justify-center">
+      {/* <div className="mb-24 mt-24 flex h-max min-h-[200px] w-full items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           <div className="font-bold text-llama-indigo">
             SEC Insights presents
@@ -142,7 +142,7 @@ export const MarketingSection = () => {
             ]}
           />
         </div>
-      </div>
+      </div> */}
       <div className="landing-page-gradient-4">
         <div className="flex items-center justify-center">
           <div className="flex h-max min-h-[300px] w-3/4 items-center justify-center">
@@ -152,7 +152,7 @@ export const MarketingSection = () => {
                 provide feedback
               </div>
               <div className="flex items-center justify-around">
-                <a href="mailto:hi@secinsights.ai" target="_blank">
+                <a href="tel:+8613159208822" target="_blank">
                   <button className="m-4 rounded border bg-llama-indigo px-8 py-2 font-bold text-white hover:bg-[#3B3775]">
                     Get in Touch
                   </button>
@@ -170,7 +170,7 @@ export const MarketingSection = () => {
             >
               Back to Top
             </button>
-            <div>©LlamaIndex Inc. 2023. All rights reserved.</div>
+            <div>©Denali. All rights reserved.</div>
           </div>
         </div>
       </div>

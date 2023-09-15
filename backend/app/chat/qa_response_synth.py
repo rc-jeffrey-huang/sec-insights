@@ -1,20 +1,20 @@
 from typing import List
-from llama_index.response_synthesizers import BaseSynthesizer
-from llama_index.indices.service_context import ServiceContext
-from llama_index.prompts.prompts import RefinePrompt, QuestionAnswerPrompt
-from llama_index.prompts.prompt_type import PromptType
+
 from app.schema import Document as DocumentSchema
-from app.chat.utils import build_title_for_document
+from llama_index.indices.service_context import ServiceContext
+from llama_index.prompts.prompt_type import PromptType
+from llama_index.prompts.prompts import QuestionAnswerPrompt, RefinePrompt
+from llama_index.response_synthesizers import BaseSynthesizer
 from llama_index.response_synthesizers.factory import get_response_synthesizer
 
 
 def get_custom_response_synth(
     service_context: ServiceContext, documents: List[DocumentSchema]
 ) -> BaseSynthesizer:
-    doc_titles = "\n".join("- " + build_title_for_document(doc) for doc in documents)
+    doc_titles = "\n".join("- " + (doc.split("."))[0] for doc in documents)
     refine_template_str = f"""
-A user has selected a set of SEC filing documents and has asked a question about them. \
-The SEC documents have the following titles:
+A user has selected a set of documents and has asked a question about them. \
+The documents have the following titles:
 {doc_titles}
 The original query is as follows: {{query_str}}
 We have provided an existing answer: {{existing_answer}}
@@ -34,8 +34,8 @@ Refined Answer:
     )
 
     qa_template_str = f"""
-A user has selected a set of SEC filing documents and has asked a question about them. \
-The SEC documents have the following titles:
+A user has selected a set of documents and has asked a question about them. \
+The documents have the following titles:
 {doc_titles}
 Context information is below.
 ---------------------

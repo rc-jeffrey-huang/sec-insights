@@ -1,23 +1,24 @@
-from typing import cast
-import uvicorn
+import json
 import logging
 import sys
-import sentry_sdk
-from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
-from alembic.config import Config
-import alembic.config
-from alembic import script
-from alembic.runtime import migration
-from sqlalchemy.engine import create_engine, Engine
-from llama_index.text_splitter.utils import split_by_sentence_tokenizer
-
-from app.api.api import api_router
-from app.db.wait_for_db import check_database_connection
-from app.core.config import settings, AppEnvironment
-from app.loader_io import loader_io_router
 from contextlib import asynccontextmanager
-from app.chat.pg_vector import get_vector_store_singleton, CustomPGVectorStore
+from typing import cast
+
+import alembic.config
+import sentry_sdk
+import uvicorn
+from alembic import script
+from alembic.config import Config
+from alembic.runtime import migration
+from app.api.api import api_router
+from app.chat.pg_vector import CustomPGVectorStore, get_vector_store_singleton
+from app.core.config import AppEnvironment, settings
+from app.db.wait_for_db import check_database_connection
+from app.loader_io import loader_io_router
+from fastapi import FastAPI
+from llama_index.text_splitter.utils import split_by_sentence_tokenizer
+from sqlalchemy.engine import Engine, create_engine
+from starlette.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -100,8 +101,9 @@ if settings.BACKEND_CORS_ORIGINS:
     # allow all origins
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.BACKEND_CORS_ORIGINS,
-        allow_origin_regex="https://llama-app-frontend.*\.vercel\.app",
+        allow_origins=["*"],
+        # allow_origin_regex="https://llama-app-frontend.*\.vercel\.app",
+        # allow_origin_regex="https://*\.netlify\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

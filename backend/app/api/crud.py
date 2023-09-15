@@ -1,10 +1,11 @@
-from typing import Optional, cast, Sequence, List
-from sqlalchemy.orm import joinedload
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.db import Conversation, Message, Document, ConversationDocument
+from typing import List, Optional, Sequence
+
 from app import schema
-from sqlalchemy import select, delete
+from app.models.db import Conversation, ConversationDocument, Message
+from sqlalchemy import delete, select
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 
 async def fetch_conversation_with_messages(
@@ -18,11 +19,7 @@ async def fetch_conversation_with_messages(
     stmt = (
         select(Conversation)
         .options(joinedload(Conversation.messages).subqueryload(Message.sub_processes))
-        .options(
-            joinedload(Conversation.conversation_documents).subqueryload(
-                ConversationDocument.document
-            )
-        )
+        .options(joinedload(Conversation.conversation_documents))
         .where(Conversation.id == conversation_id)
     )
 
@@ -32,7 +29,8 @@ async def fetch_conversation_with_messages(
         convo_dict = {
             **conversation.__dict__,
             "documents": [
-                convo_doc.document for convo_doc in conversation.conversation_documents
+                convo_doc.document_id
+                for convo_doc in conversation.conversation_documents
             ],
         }
         return schema.Conversation(**convo_dict)

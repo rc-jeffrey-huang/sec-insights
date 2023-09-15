@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MESSAGE_STATUS, MessageSubProcess, ROLE } from "~/types/conversation";
-import type { Citation } from "~/types/conversation";
-import type { Message, SubQuestion } from "~/types/conversation";
-import { LoadingSpinner } from "~/components/basics/Loading";
-import { PiCaretDownBold } from "react-icons/pi";
 import { HiOutlineChatAlt2 } from "react-icons/hi";
+import { PiCaretDownBold } from "react-icons/pi";
+import { LoadingSpinner } from "~/components/basics/Loading";
+import type { Citation, Message, SubQuestion } from "~/types/conversation";
+import { MESSAGE_STATUS, ROLE, type MessageSubProcess } from "~/types/conversation";
 
+import { AiFillExclamationCircle } from "react-icons/ai";
 import { usePdfFocus } from "~/context/pdf";
-import { AiFillExclamationCircle, AiOutlineLink } from "react-icons/ai";
-import { SecDocument } from "~/types/document";
+import { type SecDocument } from "~/types/document";
 import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
 
@@ -33,9 +32,6 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
       <div className="flex items-center">
         <div className="mr-1 text-xs font-bold text-black">
           {citation.ticker}{" "}
-        </div>
-        <div className="mr-2 text-xs font-bold text-black">
-          ({citation.displayDate})
         </div>
         <div className="text-[10px]">p. {citation.pageNumber}</div>
       </div>
@@ -287,9 +283,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
                 {message.content}
               </p>
               <p className="flex items-center justify-start p-1 text-xs text-gray-60">
-                This statement is for informational purposes only and does not
-                serve as professional financial advice. Please consult a
-                Certified Public Accountant
+                This statement is for informational purposes only
               </p>
             </div>
           </div>
@@ -363,7 +357,7 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
               <HiOutlineChatAlt2 size={40} />
             </div>
             <div className="mb-2 w-3/4 text-center text-lg font-bold">
-              Ask SEC Insights questions about the documents you&apos;ve
+              Ask questions about the documents you&apos;ve
               selected, such as:
             </div>
             <div className="m-auto flex w-full flex-wrap justify-center">

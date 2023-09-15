@@ -1,21 +1,22 @@
 """
 Pydantic Schemas for the API
 """
-from pydantic import BaseModel, Field, validator
-from enum import Enum
-from typing import List, Optional, Dict, Union, Any
-from uuid import UUID
 from datetime import datetime
-from llama_index.schema import BaseNode, NodeWithScore
-from llama_index.callbacks.schema import EventPayload
-from llama_index.query_engine.sub_question_query_engine import SubQuestionAnswerPair
+from enum import Enum
+from typing import Any, Dict, List, Optional, Union
+from uuid import UUID
+
+from app.chat.constants import DB_DOC_ID_KEY
 from app.models.db import (
     MessageRoleEnum,
     MessageStatusEnum,
     MessageSubProcessSourceEnum,
     MessageSubProcessStatusEnum,
 )
-from app.chat.constants import DB_DOC_ID_KEY
+from llama_index.callbacks.schema import EventPayload
+from llama_index.query_engine.sub_question_query_engine import SubQuestionAnswerPair
+from llama_index.schema import BaseNode, NodeWithScore
+from pydantic import BaseModel, Field, validator
 
 
 def build_uuid_validator(*field_names: str):
@@ -37,7 +38,7 @@ class BaseMetadataObject(BaseModel):
 
 
 class Citation(BaseMetadataObject):
-    document_id: UUID
+    document_id: str
     text: str
     page_number: int
     score: Optional[float]
@@ -163,8 +164,8 @@ class Document(Base):
 
 class Conversation(Base):
     messages: List[Message]
-    documents: List[Document]
+    documents: List[str]
 
 
 class ConversationCreate(BaseModel):
-    document_ids: List[UUID]
+    document_ids: List[str]

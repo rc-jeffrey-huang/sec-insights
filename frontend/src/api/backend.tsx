@@ -1,7 +1,7 @@
 import { backendUrl } from "~/config";
-import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
-import { SecDocument } from "~/types/document";
+import type { Message } from "~/types/conversation";
+import { type SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
@@ -17,6 +17,13 @@ interface GetConversationPayload {
 interface GetConversationReturnType {
   messages: Message[];
   documents: SecDocument[];
+}
+
+export interface File {
+  name: string
+  size: number
+  extension: string
+  mime_type: string
 }
 
 class BackendClient {
@@ -72,6 +79,45 @@ class BackendClient {
     const data = (await res.json()) as BackendDocument[];
     const docs = fromBackendDocumentToFrontend(data);
     return docs;
+  }
+
+  public upload(options: {
+    data: FormData
+    onprogress: (event: ProgressEvent) => void,
+    headers?: {[key: string]: string},
+  }): Promise<File> {
+    const defaultOptions = {
+      xhr: new XMLHttpRequest(),
+      method: 'POST',
+      url: `${backendUrl}api/upload`,
+      headers: {},
+      data: {},
+    }
+    const inner_options = {
+      ...defaultOptions,
+      ...options,
+    }
+    return new Promise((resolve, reject) => {
+      const xhr = inner_options.xhr;
+      xhr.open(inner_options.method, inner_options.url);
+      for (const key in inner_options.headers) {
+        xhr.setRequestHeader(key, inner_options.headers[key]);
+      }
+  
+      xhr.withCredentials = true;
+      xhr.responseType = 'json';
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 || xhr.status < 300) {
+            resolve(xhr.response);
+          } else {
+            reject(xhr);
+          }
+        }
+      };
+      xhr.upload.onprogress = options.onprogress;
+      xhr.send(options.data);
+    });
   }
 }
 

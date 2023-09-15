@@ -1,9 +1,10 @@
-from sqlalchemy import Column, String, Enum, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, ENUM, JSONB
-from sqlalchemy.orm import relationship
 from enum import Enum
-from llama_index.callbacks.schema import CBEventType
+
 from app.models.base import Base
+from llama_index.callbacks.schema import CBEventType
+from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy.dialects.postgresql import ENUM, JSONB, UUID
+from sqlalchemy.orm import relationship
 
 
 class MessageRoleEnum(str, Enum):
@@ -38,17 +39,6 @@ def to_pg_enum(enum_class) -> ENUM:
     return ENUM(enum_class, name=enum_class.__name__)
 
 
-class Document(Base):
-    """
-    A document along with its metadata
-    """
-
-    # URL to the actual document (e.g. a PDF)
-    url = Column(String, nullable=False, unique=True)
-    metadata_map = Column(JSONB, nullable=True)
-    conversations = relationship("ConversationDocument", back_populates="document")
-
-
 class Conversation(Base):
     """
     A conversation with messages and linked documents
@@ -68,9 +58,8 @@ class ConversationDocument(Base):
     conversation_id = Column(
         UUID(as_uuid=True), ForeignKey("conversation.id"), index=True
     )
-    document_id = Column(UUID(as_uuid=True), ForeignKey("document.id"), index=True)
+    document_id = Column(String)
     conversation = relationship("Conversation", back_populates="conversation_documents")
-    document = relationship("Document", back_populates="conversations")
 
 
 class Message(Base):

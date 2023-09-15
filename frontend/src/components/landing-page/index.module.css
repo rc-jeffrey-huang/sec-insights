@@ -1,0 +1,16 @@
+.progressbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #F2F4F7;
+}
+
+
+.percent {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  color: #344054;
+}
+
