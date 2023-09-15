@@ -11,7 +11,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 
-@router.post("")
+@router.post("/")
 async def upload_file(file: UploadFile):
     try:
         file_path = os.path.join(UPLOAD_FOLDER, file.filename)

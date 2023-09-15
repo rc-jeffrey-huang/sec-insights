@@ -28,7 +28,7 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
-@router.post("")
+@router.post("/")
 async def create_conversation(
     payload: schema.ConversationCreate,
     db: AsyncSession = Depends(get_db),
