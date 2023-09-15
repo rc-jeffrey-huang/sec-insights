@@ -10,6 +10,8 @@ RUN apt-get update
 RUN apt-get install libpq-dev gcc build-essential wkhtmltopdf  -y
 RUN poetry install
 
+EXPOSE 8000
+
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 

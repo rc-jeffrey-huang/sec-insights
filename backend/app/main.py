@@ -129,7 +129,8 @@ def start():
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=10000 if settings.RENDER else 8000,
+        port=8000,
         reload=live_reload,
         workers=settings.UVICORN_WORKER_COUNT,
+        proxy_headers=True,
     )
